@@ -76,6 +76,15 @@ public:
 	void add(Student s) {
 		listStudent.push_back(s);
 	}
+
+	void Input() {
+		cout << "Input Class: " << endl;
+		cout << "Name: ";
+		cin >> name;
+		cout << "SS: ";
+		cin >> ss;
+	}
+
 	void getStudentMaxScore(vector <Student> v) {
 		double max = listStudent[0].getAvgs();
 		
@@ -303,6 +312,9 @@ int main() {
 	Student s19 = Student("I1", 9);
 	Student s20 = Student("O1", 3);
 	Student s21 = Student("G1", 5);
+
+	c1.Input();
+	c2.Input();
 
 	c1.add(s);
 	c1.add(s1);
