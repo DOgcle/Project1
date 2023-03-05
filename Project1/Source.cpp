@@ -40,10 +40,10 @@ private:
 	int ss;
 	int numberGood;
 	string name;
-	vector <Student> listStudent;
 	bool good;
 
 public:
+	vector <Student> listStudent;
 	Class() {}
 	Class(string n, int s) {
 		this->name = n;
@@ -76,12 +76,9 @@ public:
 	void add(Student s) {
 		listStudent.push_back(s);
 	}
-
-	
-
-	 void  getTheHighestAverageScore() {
+	void getStudentMaxScore(vector <Student> v) {
 		double max = listStudent[0].getAvgs();
-		vector <Student> v;
+		
 		// chạy tìm điểm cao nhất
 		for (int i = 0; i < listStudent.size(); i++) {
 			if (max < listStudent[i].getAvgs()) {
@@ -94,15 +91,40 @@ public:
 				v.push_back(listStudent[i]);
 			}
 		}
-		// in ra sinh viên cao nhất
 		for (int i = 0; i < v.size(); i++) {
-			cout << "The Highest Average Score " << endl;
+
 			v[i].display();
 		}
 
 
-	}
+	 }
 	
+	// tìm sinh viên có điểm cao nhất lớp
+	 void  getTheHighestAverageScore() {
+		double max = listStudent[0].getAvgs();
+		vector <Student> v;// danh sách sinh viên cao điểm (trống)
+		// chạy tìm điểm cao nhất
+		for (int i = 0; i < listStudent.size(); i++) {
+			if (max < listStudent[i].getAvgs()) {
+				max = listStudent[i].getAvgs();
+			}
+		}
+		// thêm vào danh sách 
+		for (int i = 0; i < listStudent.size(); i++) {
+			if (listStudent[i].getAvgs() == max) {
+				v.push_back(listStudent[i]);// đưa vào danh sách để in ra
+			}
+		}
+		// in ra sinh viên cao nhất
+		cout << "The Highest Average Score " << endl;
+		for (int i = 0; i < v.size(); i++) {
+			
+			v[i].display();// thay vì dùng biến tạm thì dùng danh sách tránh để trường hợp bằng điểm
+		}
+
+			
+	}
+	// tổng sinh viên loại giỏi
 	 void getGoodSummary() {
 		
 		for (int i = 0; i < listStudent.size(); i++) {
@@ -111,7 +133,7 @@ public:
 			}
 		}
 	}
-	 
+	 // xác định lớp có trên 5 sinh viên giỏi
 	 void getSummary() {
 		 getGoodSummary();
 		 if (numberGood > 5)
@@ -125,24 +147,25 @@ class School {
 private:
 	string name;
 	vector <Class> listClass;
+
 public:
 	School() {}
 	School(string n) {
-		this->name = n;
+		this->name = n; // tạo để có tên trường tùy vào đề kêu
 		this->listClass = vector<Class>();
+		
 	}
-
+	// đưa lớp vào danh sách trường
 	void add(Class c) {
 		listClass.push_back(c);
 	}
-
+	// lớp có nhiều sinh viên nhất
 	void  getMaxStudent() {
-		int count = 0;
 		double max = listClass[0].getSs();
 		vector <Class> v;
 		// chạy tìm lớp đông nhất
 		for (int i = 0; i < listClass.size(); i++) {
-			if (count < listClass[i].getSs()) {
+			if (max < listClass[i].getSs()) {
 				max = listClass[i].getSs();
 			}
 		}
@@ -153,14 +176,14 @@ public:
 			}
 		}
 		// in ra lớp đông nhất
+		cout << "The Most Crowded Class" << endl;
 		for (int i = 0; i < v.size(); i++) {
-			cout << "The Most Crowded Class" << endl;
 			v[i].display();
 		}
 
 
 	}
-
+	// lớp có ít sinh viên nhất
 	void  getMinStudent() {
 
 		double max = listClass[0].getSs();
@@ -183,8 +206,8 @@ public:
 			v[i].display();
 		}
 
-	}
-
+	}	 
+	// lớp có điểm trung bình cao nhất
 	void getMaxAvgs() {
 		int max = listClass[0].getNumberGood();
 		vector <Class> v;
@@ -208,7 +231,7 @@ public:
 		}
 
 	}
-
+	// lớp có trên 5 sinh viên loại giỏi
 	void getClassGood() {
 		cout << "Class Good" << endl;
 		for (int i = 0; i < listClass.size(); i++) {
@@ -217,6 +240,37 @@ public:
 				listClass[i].display();
 			}
 		}
+	}
+
+
+	void getSchoolTheHighestAverageScore() {
+		double max = listClass[0].listStudent[0].getAvgs();
+		vector<Student> v;
+		
+		for (int i = 0; i < listClass.size(); i++) {
+			for (int j = 0; j < listClass[i].listStudent.size(); j++) {
+				if (max < listClass[i].listStudent[j].getAvgs()) {
+					max = listClass[i].listStudent[j].getAvgs();
+				}
+			}
+			
+		}
+		// thêm vào danh sách 
+		for (int i = 0; i < listClass.size(); i++) {
+			for (int j = 0; j < listClass[i].listStudent.size(); j++) {
+				if (listClass[i].listStudent[j].getAvgs() == max) {
+					v.push_back(listClass[i].listStudent[j]);
+				}
+			}
+
+		}
+		
+		// in ra sinh viên cao nhất
+		cout << "Max Average Score " << endl;
+		for (int i = 0; i < v.size(); i++) {
+			v[i].display();
+		}
+		
 	}
 
 
@@ -268,6 +322,7 @@ int main() {
 
 
 	c1.getTheHighestAverageScore();
+	c2.getTheHighestAverageScore();// lười
 
 	sch.add(c1);
 	sch.add(c2);
@@ -275,6 +330,7 @@ int main() {
 	sch.getClassGood();
 	sch.getMaxAvgs();
 	sch.getMinStudent();
+	sch.getSchoolTheHighestAverageScore();
 
 	return 0;
 }
